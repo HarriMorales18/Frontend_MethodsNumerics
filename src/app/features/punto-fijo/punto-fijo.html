@@ -1,0 +1,58 @@
+<div class="feature-container">
+  <header class="feature-header">
+    <h2>Método del Punto Fijo</h2>
+    <p>Resuelve ecuaciones mediante la reescritura x = g(x)</p>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="procesarCalculo()" class="card-form">
+    <div class="form-grid">
+      <div class="form-group col-span-2">
+        <label>Función g(x)</label>
+        <input type="text" formControlName="expresion_g" placeholder="Ej: 20 / (x**2 + 2*x + 10)" />
+      </div>
+
+      <div class="form-group">
+        <label>Punto Inicial (x₀)</label>
+        <input type="number" step="any" formControlName="x0" />
+      </div>
+
+      <div class="form-group">
+        <label>Tolerancia</label>
+        <input type="number" step="any" formControlName="tolerancia" />
+      </div>
+
+      <div class="form-group">
+        <label>Máx. Iteraciones</label>
+        <input type="number" formControlName="max_iter" />
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="form.invalid || cargando()" class="btn-submit">
+      {{ cargando() ? 'Calculando...' : 'Calcular' }}
+    </button>
+  </form>
+
+  <div *ngIf="errorMensaje()" class="alert-error">
+    {{ errorMensaje() }}
+  </div>
+
+  <div *ngIf="resultado()" class="info-card">
+    <h4>Análisis de Convergencia</h4>
+    <div class="info-grid">
+      <p><strong>Derivada g'(x):</strong> {{ resultado()?.derivada_g }}</p>
+      <p><strong>Evaluación |g'(x₀)|:</strong> {{ resultado()?.evaluacion_g_prima_x0 }}</p>
+      <p>
+        <strong>Estado:</strong> 
+        <span [class]="resultado()?.cumple_criterio_convergencia ? 'badge-success' : 'badge-warning'">
+          {{ resultado()?.cumple_criterio_convergencia ? 'Cumple criterio |g\'(x)| < 1' : 'No garantiza convergencia' }}
+        </span>
+      </p>
+    </div>
+  </div>
+
+  <app-tabla-resultados 
+    *ngIf="resultado()" 
+    [columnas]="columnasTabla" 
+    [filas]="resultado()!.iteraciones">
+  </app-tabla-resultados>
+</div>

@@ -1,0 +1,54 @@
+<div class="feature-container">
+  <header class="feature-header">
+    <h2>Método de la Falsa Posición</h2>
+    <p>Aproximación por interpolación lineal en intervalos cerrados</p>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="procesarCalculo()" class="card-form">
+    <div class="form-grid">
+      <div class="form-group col-span-2">
+        <label>Función f(x)</label>
+        <input type="text" formControlName="expresion" placeholder="Ej: x**3 - x - 2" />
+      </div>
+
+      <div class="form-group">
+        <label>Límite Inferior (a)</label>
+        <input type="number" step="any" formControlName="a" />
+      </div>
+
+      <div class="form-group">
+        <label>Límite Superior (b)</label>
+        <input type="number" step="any" formControlName="b" />
+      </div>
+
+      <div class="form-group">
+        <label>Tolerancia</label>
+        <input type="number" step="any" formControlName="tolerancia" />
+      </div>
+
+      <div class="form-group">
+        <label>Máx. Iteraciones</label>
+        <input type="number" formControlName="max_iter" />
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="form.invalid || cargando()" class="btn-submit">
+      {{ cargando() ? 'Calculando...' : 'Calcular' }}
+    </button>
+  </form>
+
+  <div *ngIf="errorMensaje()" class="alert-error">
+    {{ errorMensaje() }}
+  </div>
+
+  <div *ngIf="resultado()" class="info-card">
+    <h4>Resultado Obtenido</h4>
+    <p><strong>Raíz Aproximada:</strong> <span class="badge-success">{{ resultado()?.raiz }}</span></p>
+  </div>
+
+  <app-tabla-resultados 
+    *ngIf="resultado()" 
+    [columnas]="columnasTabla" 
+    [filas]="resultado()!.iteraciones">
+  </app-tabla-resultados>
+</div>

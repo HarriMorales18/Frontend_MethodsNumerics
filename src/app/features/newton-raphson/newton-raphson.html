@@ -1,0 +1,49 @@
+<div class="feature-container">
+  <header class="feature-header">
+    <h2>Método de Newton-Raphson</h2>
+    <p>Aproximación por tangentes utilizando la derivada f'(x)</p>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="procesarCalculo()" class="card-form">
+    <div class="form-grid">
+      <div class="form-group col-span-2">
+        <label>Función f(x)</label>
+        <input type="text" formControlName="expresion" placeholder="Ej: x**2 - 2" />
+      </div>
+
+      <div class="form-group">
+        <label>Valor Inicial (x₀)</label>
+        <input type="number" step="any" formControlName="x0" />
+      </div>
+
+      <div class="form-group">
+        <label>Tolerancia</label>
+        <input type="number" step="any" formControlName="tolerancia" />
+      </div>
+
+      <div class="form-group">
+        <label>Máx. Iteraciones</label>
+        <input type="number" formControlName="max_iter" />
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="form.invalid || cargando()" class="btn-submit">
+      {{ cargando() ? 'Calculando...' : 'Calcular' }}
+    </button>
+  </form>
+
+  <div *ngIf="errorMensaje()" class="alert-error">
+    {{ errorMensaje() }}
+  </div>
+
+  <div *ngIf="resultado()" class="info-card">
+    <h4>Derivada Calculada Simbólicamente</h4>
+    <p class="mb-0"><strong>f'(x) = </strong> <code>{{ resultado()?.derivada }}</code></p>
+  </div>
+
+  <app-tabla-resultados 
+    *ngIf="resultado()" 
+    [columnas]="columnasTabla" 
+    [filas]="resultado()!.iteraciones">
+  </app-tabla-resultados>
+</div>

@@ -1,0 +1,124 @@
+.feature-container {
+  padding: 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.feature-header h2 {
+  color: #234d35;
+  margin-bottom: 0.25rem;
+}
+
+.feature-header p {
+  color: #587864;
+  margin-bottom: 1.5rem;
+}
+
+.card-form {
+  background: #ffffff;
+  border: 1px solid #d4e6d9;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat( auto-fit, minmax(180px, 1fr) );
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.col-span-2 {
+  grid-column: span 2;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #2d4a3e;
+}
+
+.form-group input {
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #c2dbc9;
+  border-radius: 6px;
+  outline: none;
+  background-color: #fbfdfe;
+}
+
+.form-group input:focus {
+  border-color: #3b7a57;
+  box-shadow: 0 0 0 3px rgba(59, 122, 87, 0.15);
+}
+
+.btn-submit {
+  background-color: #3b7a57;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-submit:hover:not(:disabled) {
+  background-color: #2d5e43;
+}
+
+.btn-submit:disabled {
+  background-color: #a2c4b0;
+  cursor: not-allowed;
+}
+
+.alert-error {
+  background-color: #fde8e8;
+  border: 1px solid #f8b4b4;
+  color: #9b1c1c;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.info-card {
+  background-color: #f2f8f4;
+  border: 1px solid #d4e6d9;
+  border-radius: 8px;
+  padding: 1.25rem;
+}
+
+.info-card h4 {
+  margin: 0 0 0.75rem 0;
+  color: #234d35;
+}
+
+.info-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  color: #2d4a3e;
+}
+
+.badge-success {
+  background-color: #def7ec;
+  color: #03543f;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.badge-warning {
+  background-color: #fef3c7;
+  color: #92400e;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  font-weight: 600;
+}

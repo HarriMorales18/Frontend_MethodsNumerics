@@ -1,0 +1,45 @@
+.tabla-wrapper {
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+.tabla-container {
+  overflow-x: auto;
+  border-radius: 10px;
+  border: 1px solid #d4e6d9;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.tabla-custom {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  background-color: #ffffff;
+  text-align: center;
+}
+
+.tabla-custom thead tr {
+  background-color: #3b7a57;
+  color: #ffffff;
+}
+
+.tabla-custom th {
+  padding: 0.9rem 1rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  border-bottom: 2px solid #2d5e43;
+}
+
+.tabla-custom td {
+  padding: 0.8rem 1rem;
+  color: #2d4a3e;
+  border-bottom: 1px solid #e8f2eb;
+}
+
+.tabla-custom tbody tr:nth-child(even) {
+  background-color: #f7faf8;
+}
+
+.tabla-custom tbody tr:hover {
+  background-color: #ebf5ee;
+}

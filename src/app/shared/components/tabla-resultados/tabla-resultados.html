@@ -1,0 +1,18 @@
+<div class="tabla-wrapper" *ngIf="filas && filas.length > 0">
+  <div class="tabla-container">
+    <table class="tabla-custom">
+      <thead>
+        <tr>
+          <th *ngFor="let col of columnas">{{ col.label }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let fila of filas">
+          <td *ngFor="let col of columnas">
+            {{ fila[col.key] }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
