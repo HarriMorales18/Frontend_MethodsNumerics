@@ -70,5 +70,6 @@ export interface IteracionNewtonRaphson {
 
 export interface RespuestaNewtonRaphson {
   derivada: string;
+  raiz?: number;
   iteraciones: IteracionNewtonRaphson[];
 }

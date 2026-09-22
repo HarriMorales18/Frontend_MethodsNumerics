@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SolverService } from '../../core/services/solver.service';
 import { RespuestaNewtonRaphson } from '../../core/models/solvers.model';
-import { TablaResultados } from '../../shared/components/tabla-resultados/tabla-resultados';
 import { ColumnaTabla } from '../../core/models/table.model';
+import { TablaResultados } from '../../shared/components/tabla-resultados/tabla-resultados';
 
 @Component({
   selector: 'app-newton-raphson',
@@ -21,6 +21,7 @@ export class NewtonRaphson {
   errorMensaje = signal<string | null>(null);
   cargando = signal<boolean>(false);
 
+  // Columnas adaptadas a la interfaz IteracionNewtonRaphson
   columnasTabla: ColumnaTabla[] = [
     { key: 'iteracion', label: '# Iteración' },
     { key: 'xi', label: 'Xᵢ' },
@@ -31,9 +32,9 @@ export class NewtonRaphson {
   ];
 
   form = this.fb.nonNullable.group({
-    expresion: ['x**2 - 2', [Validators.required]],
-    x0: [1.0, [Validators.required]],
-    tolerancia: [0.001, [Validators.required, Validators.min(0.000001)]],
+    expresion: ['x**3 - 2*x - 5', [Validators.required]],
+    x0: [2.0, [Validators.required]],
+    tolerancia: [0.7, [Validators.required, Validators.min(0.000001)]],
     max_iter: [100, [Validators.required, Validators.min(1)]]
   });
 
