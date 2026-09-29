@@ -18,5 +18,9 @@ export const routes: Routes = [
     path: 'newton-raphson',
     loadComponent: () => import('./features/newton-raphson/newton-raphson').then(m => m.NewtonRaphson)
   },
+  {
+    path: 'secante',
+    loadComponent: () => import('./features/secante/secante').then(m => m.Secante)
+  },
   { path: '**', redirectTo: 'biseccion' }
 ];

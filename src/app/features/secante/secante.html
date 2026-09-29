@@ -1,7 +1,7 @@
 <div class="feature-container">
   <header class="feature-header">
-    <h2>Método del Punto Fijo</h2>
-    <p>Resuelve ecuaciones mediante la reescritura x = g(x)</p>
+    <h2>Método de la Secante</h2>
+    <p>Aproximación de la derivada mediante diferencias finitas con dos puntos iniciales</p>
   </header>
 
   <form [formGroup]="form" (ngSubmit)="procesarCalculo()" class="card-form">
@@ -12,13 +12,18 @@
 
     <div class="form-grid">
       <div class="form-group col-span-2">
-        <label>Función g(x)</label>
-        <input type="text" formControlName="expresion_g" placeholder="Ej: 20 / (x**2 + 2*x + 10)" />
+        <label>Función f(x)</label>
+        <input type="text" formControlName="expresion" placeholder="Ej: x**3 - 2*x - 5" />
       </div>
 
       <div class="form-group">
-        <label>Punto Inicial (x₀)</label>
+        <label>Primer punto (X₀)</label>
         <input type="number" step="any" formControlName="x0" />
+      </div>
+
+      <div class="form-group">
+        <label>Segundo punto (X₁)</label>
+        <input type="number" step="any" formControlName="x1" />
       </div>
 
       <div class="form-group">
@@ -42,17 +47,8 @@
   </div>
 
   <div *ngIf="resultado()" class="info-card">
-    <h4>Análisis de Convergencia</h4>
-    <div class="info-grid">
-      <p><strong>Derivada g'(x):</strong> {{ resultado()?.derivada_g }}</p>
-      <p><strong>Evaluación |g'(x₀)|:</strong> {{ resultado()?.evaluacion_g_prima_x0 }}</p>
-      <p>
-        <strong>Estado:</strong> 
-        <span [class]="resultado()?.cumple_criterio_convergencia ? 'badge-success' : 'badge-warning'">
-          {{ resultado()?.cumple_criterio_convergencia ? 'Cumple criterio |g\'(x)| < 1' : 'No garantiza convergencia' }}
-        </span>
-      </p>
-    </div>
+    <h4>Resultado Obtenido</h4>
+    <p><strong>Raíz Aproximada:</strong> <span class="badge-success">{{ resultado()?.raiz }}</span></p>
   </div>
 
   <app-tabla-resultados 

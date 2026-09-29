@@ -2,38 +2,39 @@ import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SolverService } from '../../core/services/solver.service';
-import { RespuestaIntervalo } from '../../core/models/solvers.model';
+import { RespuestaSecante } from '../../core/models/solvers.model';
 import { TablaResultados } from '../../shared/components/tabla-resultados/tabla-resultados';
 import { ColumnaTabla } from '../../core/models/table.model';
 
 @Component({
-  selector: 'app-falsa-posicion',
+  selector: 'app-secante',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, TablaResultados],
-  templateUrl: './falsa-posicion.html',
-  styleUrls: ['./falsa-posicion.css']
+  templateUrl: './secante.html',
+  styleUrls: ['./secante.css']
 })
-export class FalsaPosicion {
+export class Secante {
   private readonly fb = inject(FormBuilder);
   private readonly solverService = inject(SolverService);
 
-  resultado = signal<RespuestaIntervalo | null>(null);
+  resultado = signal<RespuestaSecante | null>(null);
   errorMensaje = signal<string | null>(null);
   cargando = signal<boolean>(false);
 
   columnasTabla: ColumnaTabla[] = [
     { key: 'iteracion', label: '# Iteración' },
-    { key: 'a', label: 'a' },
-    { key: 'b', label: 'b' },
-    { key: 'xr', label: 'Xr (Interpolación)' },
-    { key: 'f_xr', label: 'f(Xr)' },
+    { key: 'x0', label: 'X₀' },
+    { key: 'x1', label: 'X₁' },
+    { key: 'f_x0', label: 'f(X₀)' },
+    { key: 'f_x1', label: 'f(X₁)' },
+    { key: 'x_siguiente', label: 'Xᵢ₊₁' },
     { key: 'error', label: 'Error' }
   ];
 
   form = this.fb.group({
     expresion: ['', [Validators.required]],
-    a: [null, [Validators.required]],
-    b: [null, [Validators.required]],
+    x0: [null, [Validators.required]],
+    x1: [null, [Validators.required]],
     tolerancia: [null, [Validators.required, Validators.min(0.000001)]],
     max_iter: [null, [Validators.required, Validators.min(1)]]
   });
@@ -41,8 +42,8 @@ export class FalsaPosicion {
   limpiarFormulario(): void {
     this.form.reset({
       expresion: '',
-      a: null,
-      b: null,
+      x0: null,
+      x1: null,
       tolerancia: null,
       max_iter: null
     });
@@ -56,49 +57,37 @@ export class FalsaPosicion {
 
     const rawValue = this.form.getRawValue();
     const expresion = rawValue.expresion;
-    const a = rawValue.a;
-    const b = rawValue.b;
+    const x0 = rawValue.x0;
+    const x1 = rawValue.x1;
     const tolerancia = rawValue.tolerancia;
     const maxIter = rawValue.max_iter;
 
-    if (!expresion || a == null || b == null || tolerancia == null || maxIter == null) {
+    if (
+      !expresion ||
+      x0 == null ||
+      x1 == null ||
+      tolerancia == null ||
+      maxIter == null
+    ) {
       return;
     }
 
     this.cargando.set(true);
     this.errorMensaje.set(null);
 
-    this.solverService.calcularFalsaPosicion({
+    this.solverService.calcularSecante({
       expresion,
-      a: Number(a),
-      b: Number(b),
+      x0: Number(x0),
+      x1: Number(x1),
       tolerancia: Number(tolerancia),
       max_iter: Number(maxIter)
     }).subscribe({
       next: (res) => {
-        const iteracionesRaw = res.data.iteraciones || [];
-
-        // Normalización de propiedades 'c' y 'fc' que entrega el backend
-        const iteracionesNormalizadas = iteracionesRaw.map((it: any) => ({
-          ...it,
-          xr: it.xr ?? it.x_r ?? it.c ?? it.p ?? it.pm,
-          f_xr: it.f_xr ?? it.fc ?? it.f_c ?? it.f_p ?? it.f_pm
-        }));
-
-        // Recuperación de la raíz obtenida al término del bucle
-        const ultimaIteracion = iteracionesNormalizadas[iteracionesNormalizadas.length - 1];
-        const raizCalculada = res.data.raiz ?? ultimaIteracion?.xr ?? null;
-
-        this.resultado.set({
-          ...res.data,
-          raiz: raizCalculada,
-          iteraciones: iteracionesNormalizadas
-        });
-
+        this.resultado.set(res.data);
         this.cargando.set(false);
       },
       error: (err) => {
-        this.errorMensaje.set(err.error?.detail || 'Error al procesar el método.');
+        this.errorMensaje.set(err.error?.detail || 'Error al procesar el cálculo.');
         this.resultado.set(null);
         this.cargando.set(false);
       }

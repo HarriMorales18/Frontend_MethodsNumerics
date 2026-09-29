@@ -9,6 +9,8 @@ import {
   RespuestaPuntoFijo,
   RequestNewtonRaphson,
   RespuestaNewtonRaphson,
+  RequestSecante,
+  RespuestaSecante,
 } from '../models/solvers.model';
 
 @Injectable({
@@ -32,5 +34,9 @@ export class SolverService {
 
   calcularNewtonRaphson(payload: RequestNewtonRaphson): Observable<ApiResponse<RespuestaNewtonRaphson>> {
     return this.http.post<ApiResponse<RespuestaNewtonRaphson>>(`${this.apiUrl}/newton-raphson`, payload);
+  }
+
+  calcularSecante(payload: RequestSecante): Observable<ApiResponse<RespuestaSecante>> {
+    return this.http.post<ApiResponse<RespuestaSecante>>(`${this.apiUrl}/secante`, payload);
   }
 }

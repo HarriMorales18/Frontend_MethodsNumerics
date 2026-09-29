@@ -73,3 +73,31 @@ export interface RespuestaNewtonRaphson {
   raiz?: number;
   iteraciones: IteracionNewtonRaphson[];
 }
+
+// Petición para el Método de la Secante
+export interface RequestSecante {
+  expresion: string;
+  x0: number;
+  x1: number;
+  tolerancia: number;
+  max_iter?: number;
+}
+
+// Estructura de cada iteración devuelta por FastAPI
+export interface IteracionSecante {
+  iteracion: number;
+  x0: number;
+  x1: number;
+  x_siguiente: number;
+  f_x0: number;
+  f_x1: number;
+  error: number;
+}
+
+// Respuesta completa del servicio
+export interface RespuestaSecante {
+  variable: string;
+  expresion: string;
+  raiz: number;
+  iteraciones: IteracionSecante[];
+}

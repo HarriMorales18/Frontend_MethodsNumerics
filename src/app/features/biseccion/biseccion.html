@@ -5,6 +5,11 @@
   </header>
 
   <form [formGroup]="form" (ngSubmit)="procesarCalculo()" class="card-form">
+    <div class="form-topbar">
+      <span class="form-topbar-title">Datos del cálculo</span>
+      <button type="button" class="btn-clear" (click)="limpiarFormulario()">Limpiar datos</button>
+    </div>
+
     <div class="form-grid">
       <div class="form-group col-span-2">
         <label>Función f(x)</label>

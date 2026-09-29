@@ -31,20 +31,47 @@ export class NewtonRaphson {
     { key: 'error', label: 'Error' }
   ];
 
-  form = this.fb.nonNullable.group({
-    expresion: ['x**3 - 2*x - 5', [Validators.required]],
-    x0: [2.0, [Validators.required]],
-    tolerancia: [0.7, [Validators.required, Validators.min(0.000001)]],
-    max_iter: [100, [Validators.required, Validators.min(1)]]
+  form = this.fb.group({
+    expresion: ['', [Validators.required]],
+    x0: [null, [Validators.required]],
+    tolerancia: [null, [Validators.required, Validators.min(0.000001)]],
+    max_iter: [null, [Validators.required, Validators.min(1)]]
   });
+
+  limpiarFormulario(): void {
+    this.form.reset({
+      expresion: '',
+      x0: null,
+      tolerancia: null,
+      max_iter: null
+    });
+    this.resultado.set(null);
+    this.errorMensaje.set(null);
+    this.cargando.set(false);
+  }
 
   procesarCalculo(): void {
     if (this.form.invalid) return;
 
+    const rawValue = this.form.getRawValue();
+    const expresion = rawValue.expresion;
+    const x0 = rawValue.x0;
+    const tolerancia = rawValue.tolerancia;
+    const maxIter = rawValue.max_iter;
+
+    if (!expresion || x0 == null || tolerancia == null || maxIter == null) {
+      return;
+    }
+
     this.cargando.set(true);
     this.errorMensaje.set(null);
 
-    this.solverService.calcularNewtonRaphson(this.form.getRawValue()).subscribe({
+    this.solverService.calcularNewtonRaphson({
+      expresion,
+      x0: Number(x0),
+      tolerancia: Number(tolerancia),
+      max_iter: Number(maxIter)
+    }).subscribe({
       next: (res) => {
         this.resultado.set(res.data);
         this.cargando.set(false);

@@ -30,21 +30,51 @@ export class Biseccion {
     { key: 'error', label: 'Error' }
   ];
 
-  form = this.fb.nonNullable.group({
-    expresion: ['x**3 - x - 2', [Validators.required]],
-    a: [1.0, [Validators.required]],
-    b: [2.0, [Validators.required]],
-    tolerancia: [0.01, [Validators.required, Validators.min(0.000001)]],
-    max_iter: [100, [Validators.required, Validators.min(1)]]
+  form = this.fb.group({
+    expresion: ['', [Validators.required]],
+    a: [null, [Validators.required]],
+    b: [null, [Validators.required]],
+    tolerancia: [null, [Validators.required, Validators.min(0.000001)]],
+    max_iter: [null, [Validators.required, Validators.min(1)]]
   });
+
+  limpiarFormulario(): void {
+    this.form.reset({
+      expresion: '',
+      a: null,
+      b: null,
+      tolerancia: null,
+      max_iter: null
+    });
+    this.resultado.set(null);
+    this.errorMensaje.set(null);
+    this.cargando.set(false);
+  }
 
   procesarCalculo(): void {
     if (this.form.invalid) return;
 
+    const rawValue = this.form.getRawValue();
+    const expresion = rawValue.expresion;
+    const a = rawValue.a;
+    const b = rawValue.b;
+    const tolerancia = rawValue.tolerancia;
+    const maxIter = rawValue.max_iter;
+
+    if (!expresion || a == null || b == null || tolerancia == null || maxIter == null) {
+      return;
+    }
+
     this.cargando.set(true);
     this.errorMensaje.set(null);
 
-    this.solverService.calcularBiseccion(this.form.getRawValue()).subscribe({
+    this.solverService.calcularBiseccion({
+      expresion,
+      a: Number(a),
+      b: Number(b),
+      tolerancia: Number(tolerancia),
+      max_iter: Number(maxIter)
+    }).subscribe({
       next: (res) => {
         const iteracionesRaw = res.data.iteraciones || [];
 

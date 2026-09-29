@@ -28,20 +28,47 @@ export class PuntoFijo {
     { key: 'error', label: 'Error (|P₁ - P₀|)' }
   ];
 
-  form = this.fb.nonNullable.group({
-    expresion_g: ['20 / (x**2 + 2*x + 10)', [Validators.required]],
-    x0: [1.0, [Validators.required]],
-    tolerancia: [0.1, [Validators.required, Validators.min(0.000001)]],
-    max_iter: [100, [Validators.required, Validators.min(1)]]
+  form = this.fb.group({
+    expresion_g: ['', [Validators.required]],
+    x0: [null, [Validators.required]],
+    tolerancia: [null, [Validators.required, Validators.min(0.000001)]],
+    max_iter: [null, [Validators.required, Validators.min(1)]]
   });
+
+  limpiarFormulario(): void {
+    this.form.reset({
+      expresion_g: '',
+      x0: null,
+      tolerancia: null,
+      max_iter: null
+    });
+    this.resultado.set(null);
+    this.errorMensaje.set(null);
+    this.cargando.set(false);
+  }
 
   procesarCalculo(): void {
     if (this.form.invalid) return;
 
+    const rawValue = this.form.getRawValue();
+    const expresionG = rawValue.expresion_g;
+    const x0 = rawValue.x0;
+    const tolerancia = rawValue.tolerancia;
+    const maxIter = rawValue.max_iter;
+
+    if (!expresionG || x0 == null || tolerancia == null || maxIter == null) {
+      return;
+    }
+
     this.cargando.set(true);
     this.errorMensaje.set(null);
 
-    this.solverService.calcularPuntoFijo(this.form.getRawValue()).subscribe({
+    this.solverService.calcularPuntoFijo({
+      expresion_g: expresionG,
+      x0: Number(x0),
+      tolerancia: Number(tolerancia),
+      max_iter: Number(maxIter)
+    }).subscribe({
       next: (res) => {
         this.resultado.set(res.data);
         this.cargando.set(false);

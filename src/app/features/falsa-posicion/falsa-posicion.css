@@ -2,6 +2,10 @@
 .feature-header h2 { color: #234d35; margin-bottom: 0.25rem; }
 .feature-header p { color: #587864; margin-bottom: 1.5rem; }
 .card-form { background: #ffffff; border: 1px solid #d4e6d9; border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem; }
+.form-topbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
+.form-topbar-title { font-size: 0.9rem; font-weight: 700; color: #234d35; }
+.btn-clear { border: 1px solid #b9d7c5; background: #f3faf5; color: #234d35; border-radius: 6px; padding: 0.55rem 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+.btn-clear:hover { background: #e7f5eb; border-color: #97c1a6; }
 .form-grid { display: grid; grid-template-columns: repeat( auto-fit, minmax(180px, 1fr) ); gap: 1rem; margin-bottom: 1.25rem; }
 .col-span-2 { grid-column: span 2; }
 .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
